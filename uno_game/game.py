@@ -1,4 +1,4 @@
-from cards import CardHeap
+from cards import CardHeap, STATE, COLOR
 from player import Player
 
 
@@ -10,22 +10,31 @@ class Game:
         self.round_num = 0
         self.state = None
         self.color = None
+        self.direction = 1
 
     def one_round(self):
+        if self.state == STATE.SKIP:
+            self.round_num += self.direction
+
+        if self.state == STATE.DRAW_TWO:
+
+
+
+
+
+
         player_idx = self.round_num % self.player_num
         player = self.players[player_idx]
         player.view_game(self)
-        out = player.make_move()
+        action = player.make_move()
 
-        if out == 'draw':
+        if action.draw:
             cards = self.card_heap.draw(1)
             player.get_cards(cards)
 
-        if is_out
-
-        if out == 'draw_four':
-            self.state = 'draw_four'
-        if out == 'draw_two':
+        self.state = action.content
+        if action.color != COLOR.BLACK:
+            self.color = action.color
 
 
 

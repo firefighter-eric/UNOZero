@@ -1,29 +1,19 @@
 import random
 from typing import List
 
-
-class COLOR:
-    RED = 0
-    GREEN = 1
-    BLUE = 2
-    YELLOW = 3
-    BLACK = 4
-
-
-class STATE:
-    SKIP = 0
-    DRAW_TWO = 1
-    REVERSE = 2
-    WILD = 3
-    WILD_DRAW_FOUR = 4
+COLOR = ['RED', 'GREEN', 'BLUE', 'YELLOW', 'BLACK']
+NUMBER = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+STATE = ['NONE', 'SKIP', 'DRAW_TWO', 'REVERSE', 'WILD', 'WILD_DRAW_FOUR']
+CONTENT = NUMBER + STATE
 
 
 class Card:
-    def __init__(self, uid, idx, color, content):
+    def __init__(self, uid, idx, color, content, state):
         self.uid = uid
         self.idx = idx
         self.color = color
         self.content = content
+        self.state = state
 
 
 class Cards:
@@ -32,24 +22,33 @@ class Cards:
 
         uid = 0
         idx = 0
-        for color in [COLOR.RED, COLOR.GREEN, COLOR.BLUE, COLOR.YELLOW]:
-            for content in ['1', '2', '3', '4', '5', '6', '7', '8', '9', STATE.SKIP, STATE.DRAW_TWO, STATE.REVERSE]:
+        for color in COLOR[:-1]:
+            # number card
+            for number in NUMBER[1:]:
                 for n in range(2):
-                    card = Card(uid, idx, color, content)
+                    card = Card(uid, idx, color, number, 'NONE')
                     self.all.append(card)
                     uid += 1
                 idx += 1
 
-            # card '0'
-            card = Card(uid, idx, color, '0')
+            # '0' card
+            card = Card(uid, idx, color, '0', 'NONE')
             self.all.append(card)
             uid += 1
             idx += 1
 
-        # card 'BLACK'
-        for content in [STATE.WILD, STATE.WILD_DRAW_FOUR]:
+            # state card
+            for state in STATE[1:4]:
+                for n in range(2):
+                    card = Card(uid, idx, color, state, state)
+                    self.all.append(card)
+                    uid += 1
+                idx += 1
+
+        # 'BLACK' card
+        for state in STATE[4:]:
             for n in range(4):
-                card = Card(uid, idx, COLOR.BLACK, content)
+                card = Card(uid, idx, 'BLACK', state, state)
                 self.all.append(card)
                 uid += 1
             idx += 1
@@ -81,5 +80,5 @@ class CardHeap:
 
 
 if __name__ == '__main__':
-    cards = Cards()
-    ch = CardHeap()
+    _cards = Cards()
+    _ch = CardHeap()
